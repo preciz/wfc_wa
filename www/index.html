@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WASM Wave Function Collapse</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .image-pixelated {
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 overflow-hidden h-screen flex flex-col md:flex-row">
+    <!-- Matrix Editor (Top Left / Side) -->
+    <div id="controls" class="p-4 bg-white shadow-lg border-b md:border-r border-gray-200 w-full md:w-80 flex-shrink-0 z-10 overflow-y-auto">
+        <h2 class="text-sm font-bold mb-2 uppercase tracking-wider text-gray-500">Input Matrix (6x6)</h2>
+        <div id="grid-container" class="grid grid-cols-6 gap-1 mb-4">
+            <!-- Grid cells injected by JS -->
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Color Picker</label>
+            <input type="color" id="color-picker" value="#000000" class="w-full h-10 border-none cursor-pointer p-0 bg-transparent">
+        </div>
+
+        <div class="mb-4">
+            <div class="flex justify-between items-center mb-1">
+                <span class="text-xs font-bold text-gray-500 uppercase">Status</span>
+                <span id="status-text" class="text-xs font-mono text-blue-600 font-bold">READY</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-1.5 overflow-hidden">
+                <div id="progress-bar" class="bg-blue-600 h-1.5 rounded-full transition-all duration-100" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <button id="restart-btn" class="w-full py-2 bg-blue-600 text-white rounded font-bold hover:bg-blue-700 transition-colors shadow-md">
+            RESTART COLLAPSE
+        </button>
+
+        <button id="share-btn" class="w-full mt-2 py-2 bg-gray-600 text-white rounded font-bold hover:bg-gray-700 transition-colors shadow-md flex items-center justify-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+            </svg>
+            COPY SHARE LINK
+        </button>
+
+        <div id="error-msg" class="mt-4 p-2 bg-red-100 border border-red-400 text-red-700 text-xs rounded hidden">
+        </div>
+        
+        <div class="mt-8 text-[10px] text-gray-400 uppercase tracking-tighter text-center">
+            Extreme High Performance WASM WFC
+        </div>
+    </div>
+
+    <!-- Canvas Container (Adaptive) -->
+    <div class="flex-grow flex items-center justify-center bg-gray-900 overflow-hidden relative">
+        <canvas id="wfc-canvas" width="128" height="128" class="image-pixelated w-full h-full object-contain"></canvas>
+    </div>
+
+    <script type="module" src="./js/main.js"></script>
+</body>
+</html>
