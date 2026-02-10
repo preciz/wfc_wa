@@ -46,7 +46,7 @@ This project can be hosted as a **Static Site** on Render.
 1. **Service Type:** Static Site
 2. **Build Command:**
    ```bash
-   curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh && wasm-pack build --target web --out-dir www/pkg
+   ./build.sh
    ```
 3. **Publish Directory:** `wave_wa/www`
 4. **Environment Variables:**
@@ -54,4 +54,4 @@ This project can be hosted as a **Static Site** on Render.
 
 ### Why this Build Command?
 
-Since the standard Render environment doesn't include `wasm-pack`, the command first installs the `wasm-pack` binary and then runs the build process to generate the WASM and glue code in the `www/pkg` directory before deployment.
+Since the standard Render environment doesn't include `wasm-pack` and has a read-only global filesystem, `build.sh` downloads a pre-compiled `wasm-pack` binary to a local directory and uses it to build the project.
