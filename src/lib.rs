@@ -17,7 +17,6 @@ type Tile = Vec<Vec<Color>>;
 #[wasm_bindgen]
 pub struct WfcEngine {
     output_size: usize,
-    tile_size: usize,
     tiles: Vec<Tile>,
     weights: Vec<f32>,
     adjacencies: Vec<HashMap<(isize, isize), u128>>,
@@ -28,7 +27,6 @@ pub struct WfcEngine {
     stack: Vec<(usize, usize)>,
     
     // Backtracking state
-    last_contradiction_pos: Option<(usize, usize)>,
     local_reset_size: usize,
     local_reset_attempts: usize,
 }
@@ -58,7 +56,6 @@ impl WfcEngine {
 
         Ok(WfcEngine {
             output_size,
-            tile_size,
             tiles,
             weights,
             adjacencies,
@@ -67,7 +64,6 @@ impl WfcEngine {
             rng,
             all_flags,
             stack: Vec::with_capacity(output_size * output_size),
-            last_contradiction_pos: None,
             local_reset_size: 8,
             local_reset_attempts: 0,
         })
