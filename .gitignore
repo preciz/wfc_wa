@@ -1,1 +1,13 @@
 /target
+/pkg
+.wasm-pack
+www/pkg
+
+# IDEs
+.idea
+.vscode
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
