@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>WASM Wave Function Collapse</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -10,11 +10,33 @@
             image-rendering: pixelated;
             image-rendering: crisp-edges;
         }
+        /* Mobile Overlay Styles */
+        @media (max-width: 768px) {
+            #controls {
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100%;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease-in-out;
+            }
+            #controls.open {
+                transform: translateX(0);
+            }
+        }
     </style>
 </head>
 <body class="bg-gray-100 overflow-hidden h-screen flex flex-col md:flex-row">
-    <!-- Matrix Editor (Top Left / Side) -->
-    <div id="controls" class="p-4 bg-white shadow-lg border-b md:border-r border-gray-200 w-full md:w-80 flex-shrink-0 z-10 overflow-y-auto">
+    <!-- Mobile Menu Toggle -->
+    <button id="menu-toggle" class="md:hidden fixed top-4 left-4 z-50 p-3 bg-blue-600 text-white rounded-full shadow-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+          <path id="close-icon" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+    </button>
+
+    <!-- Matrix Editor (Side Overlay) -->
+    <div id="controls" class="p-4 bg-white shadow-lg border-b md:border-r border-gray-200 w-full md:w-80 flex-shrink-0 z-40 overflow-y-auto pt-16 md:pt-4">
         <h2 class="text-sm font-bold mb-2 uppercase tracking-wider text-gray-500">Input Matrix (6x6)</h2>
         <div id="grid-container" class="grid grid-cols-6 gap-1 mb-4">
             <!-- Grid cells injected by JS -->
@@ -50,7 +72,7 @@
         </div>
         
         <div class="mt-8 text-[10px] text-gray-400 uppercase tracking-tighter text-center">
-            Extreme High Performance WASM WFC
+            WASM WFC
         </div>
     </div>
 

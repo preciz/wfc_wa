@@ -16,6 +16,25 @@ async function run() {
     const progressBar = document.getElementById("progress-bar");
     const statusText = document.getElementById("status-text");
     const errorMsg = document.getElementById("error-msg");
+    const menuToggle = document.getElementById("menu-toggle");
+    const controls = document.getElementById("controls");
+    const menuIcon = document.getElementById("menu-icon");
+    const closeIcon = document.getElementById("close-icon");
+
+    // Mobile Menu Toggle
+    menuToggle.onclick = () => {
+        const isOpen = controls.classList.toggle("open");
+        menuIcon.classList.toggle("hidden", isOpen);
+        closeIcon.classList.toggle("hidden", !isOpen);
+    };
+
+    function closeMenuOnMobile() {
+        if (window.innerWidth < 768) {
+            controls.classList.remove("open");
+            menuIcon.classList.remove("hidden");
+            closeIcon.classList.add("hidden");
+        }
+    }
 
     let inputMatrix = Array(MATRIX_SIZE).fill().map(() => 
         Array(MATRIX_SIZE).fill({ r: 255, g: 255, b: 255 })
@@ -52,13 +71,13 @@ async function run() {
                 const cell = document.createElement("div");
                 cell.className = "aspect-square border border-gray-200 cursor-pointer hover:opacity-80 transition-opacity";
                 cell.style.backgroundColor = `rgb(${inputMatrix[r][c].r}, ${inputMatrix[r][c].g}, ${inputMatrix[r][c].b})`;
-                cell.onclick = () => {
-                    inputMatrix[r][c] = { ...selectedColor };
-                    cell.style.backgroundColor = `rgb(${selectedColor.r}, ${selectedColor.g}, ${selectedColor.b})`;
-                    syncUrl();
-                    restart();
-                };
-                gridContainer.appendChild(cell);
+                            cell.onclick = () => {
+                                inputMatrix[r][c] = { ...selectedColor };
+                                cell.style.backgroundColor = `rgb(${selectedColor.r}, ${selectedColor.g}, ${selectedColor.b})`;
+                                syncUrl();
+                                closeMenuOnMobile();
+                                restart();
+                            };                gridContainer.appendChild(cell);
             }
         }
     }
@@ -74,7 +93,10 @@ async function run() {
         };
     };
 
-    restartBtn.onclick = restart;
+    restartBtn.onclick = () => {
+        closeMenuOnMobile();
+        restart();
+    };
     
     shareBtn.onclick = () => {
         const url = window.location.href;
