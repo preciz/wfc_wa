@@ -48,7 +48,7 @@ This project can be hosted as a **Static Site** on Render.
    ```bash
    ./build.sh
    ```
-3. **Publish Directory:** `wave_wa/www`
+3. **Publish Directory:** `www` (or `wave_wa/www` if your repo root is the parent directory)
 4. **Environment Variables:**
    - No specific variables required, but ensure the build environment has access to the internet to download the `wasm-pack` installer.
 
