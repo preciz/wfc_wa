@@ -26,6 +26,8 @@ To compile the Rust code to WebAssembly:
 wasm-pack build --target web --out-dir www/pkg
 ```
 
+*Alternatively, if you don't have `wasm-pack` installed, you can use the provided script:* `./build.sh`
+
 ### Running
 
 Navigate to the `www` directory and start a server:
@@ -50,7 +52,7 @@ This project can be hosted as a **Static Site** on Render.
    ```
 3. **Publish Directory:** `www` (or `wave_wa/www` if your repo root is the parent directory)
 4. **Environment Variables:**
-   - No specific variables required, but ensure the build environment has access to the internet to download the `wasm-pack` installer.
+   - No specific variables required, but ensure the build environment has access to the internet to download the `wasm-pack` binary via the build script.
 
 ### Why this Build Command?
 
