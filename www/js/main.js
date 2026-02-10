@@ -5,7 +5,7 @@ async function run() {
 
     const OUTPUT_SIZE = 128;
     const MATRIX_SIZE = 6;
-    const TILE_SIZE = 2;
+    let tileSize = 2;
 
     const canvas = document.getElementById("wfc-canvas");
     const ctx = canvas.getContext("2d");
@@ -20,6 +20,8 @@ async function run() {
     const controls = document.getElementById("controls");
     const menuIcon = document.getElementById("menu-icon");
     const closeIcon = document.getElementById("close-icon");
+    const btnTile2 = document.getElementById("tile-size-2");
+    const btnTile3 = document.getElementById("tile-size-3");
 
     // Mobile Menu Toggle
     menuToggle.onclick = () => {
@@ -50,6 +52,13 @@ async function run() {
     // Try to load from URL
     const urlParams = new URLSearchParams(window.location.search);
     const sharedPattern = urlParams.get('p');
+    const sharedN = urlParams.get('n');
+
+    if (sharedN) {
+        tileSize = parseInt(sharedN);
+        if (tileSize !== 2 && tileSize !== 3) tileSize = 2;
+    }
+
     if (sharedPattern) {
         try {
             const decoded = decodePattern(sharedPattern, MATRIX_SIZE);
@@ -58,6 +67,50 @@ async function run() {
             console.error("Failed to decode pattern from URL", e);
         }
     }
+
+    function updateTileSizeUI() {
+        if (tileSize === 2) {
+            btnTile2.classList.replace("border-gray-300", "border-blue-600");
+            btnTile2.classList.replace("text-gray-500", "text-white");
+            btnTile2.classList.replace("hover:bg-gray-100", "bg-blue-600");
+            btnTile2.classList.remove("bg-transparent");
+            
+            btnTile3.classList.replace("border-blue-600", "border-gray-300");
+            btnTile3.classList.replace("text-white", "text-gray-500");
+            btnTile3.classList.replace("bg-blue-600", "hover:bg-gray-100");
+            btnTile3.classList.add("bg-transparent");
+        } else {
+            btnTile3.classList.replace("border-gray-300", "border-blue-600");
+            btnTile3.classList.replace("text-gray-500", "text-white");
+            btnTile3.classList.replace("hover:bg-gray-100", "bg-blue-600");
+            btnTile3.classList.remove("bg-transparent");
+
+            btnTile2.classList.replace("border-blue-600", "border-gray-300");
+            btnTile2.classList.replace("text-white", "text-gray-500");
+            btnTile2.classList.replace("bg-blue-600", "hover:bg-gray-100");
+            btnTile2.classList.add("bg-transparent");
+        }
+    }
+
+    btnTile2.onclick = () => {
+        if (tileSize !== 2) {
+            tileSize = 2;
+            updateTileSizeUI();
+            syncUrl();
+            restart();
+        }
+    };
+
+    btnTile3.onclick = () => {
+        if (tileSize !== 3) {
+            tileSize = 3;
+            updateTileSizeUI();
+            syncUrl();
+            restart();
+        }
+    };
+    
+    updateTileSizeUI();
 
     let engine = null;
     let running = false;
@@ -109,14 +162,14 @@ async function run() {
 
     function syncUrl() {
         const encoded = encodePattern(inputMatrix);
-        const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?p=' + encoded;
+        const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?p=' + encoded + '&n=' + tileSize;
         window.history.replaceState({path: newUrl}, '', newUrl);
     }
 
     function restart() {
         try {
             errorMsg.classList.add("hidden");
-            engine = new WfcEngine(inputMatrix, OUTPUT_SIZE, TILE_SIZE);
+            engine = new WfcEngine(inputMatrix, OUTPUT_SIZE, tileSize);
             running = true;
             statusText.innerText = "COLLAPSING";
             statusText.classList.remove("text-green-600");
